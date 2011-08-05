@@ -136,8 +136,8 @@ up:
 #
 
 $(GTEST).o:
-	$(CXX) -O2 -c $(GTEST).cpp -I. -o $@
+	$(CXX) -O2 -Wall -D__STDC_LIMIT_MACROS -c $(GTEST).cpp -I. -o $@
 
 test: $(GTEST).o
-	$(CXX) -O2 -Wall -D__STDC_LIMIT_MACROS -I. -o $(TESTRUNNER) $(TESTS) $(TESTABLES) $(GTEST).o gtest/gtest-main.cpp
+	$(CXX) -O2 -Wall -D__STDC_LIMIT_MACROS -lpthread -I. -o $(TESTRUNNER) $(TESTS) $(TESTABLES) $(GTEST).o gtest/gtest-main.cpp
 	./$(TESTRUNNER)
