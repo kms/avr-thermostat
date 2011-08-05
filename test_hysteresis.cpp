@@ -22,11 +22,9 @@ class HysteresisTest : public ::testing::Test {
 
 TEST_F(HysteresisTest, TestInit) {
     hysteresis h;
-    h.currentValue = 123;
     h.currentState = HIGH;
 
     initHysteresis(&h, 50, 100);
-    ASSERT_EQ(0, h.currentValue);
     ASSERT_EQ(LOW, h.currentState);
 }
 
@@ -34,9 +32,7 @@ TEST_F(HysteresisTest, TestUpdateWithValueNotCrossingThresholds) {
     hysteresis h;
 
     initHysteresis(&h, 50, 100);
-    ASSERT_EQ(0, h.currentValue);
     updateHysteresis(&h, 10);
-    ASSERT_EQ(10, h.currentValue);
     ASSERT_EQ(LOW, h.currentState);
 }
 
@@ -45,5 +41,80 @@ TEST_F(HysteresisTest, TestUpdateWithValueHittingToLowThreshold) {
 
     initHysteresis(&h, 50, 100);
     updateHysteresis(&h, 50);
+    ASSERT_EQ(LOW, h.currentState);
+}
+
+TEST_F(HysteresisTest, TestUpdateWithValuePassingToLowThreshold) {
+    hysteresis h;
+
+    initHysteresis(&h, 50, 100);
+    updateHysteresis(&h, 51);
+    ASSERT_EQ(LOW, h.currentState);
+}
+
+TEST_F(HysteresisTest, TestUpdateWithValueHittingToHighThreshold) {
+    hysteresis h;
+
+    initHysteresis(&h, 50, 100);
+    updateHysteresis(&h, 100);
+    ASSERT_EQ(LOW, h.currentState);
+}
+
+TEST_F(HysteresisTest, TestUpdateWithValuePassingToHighThreshold) {
+    hysteresis h;
+
+    initHysteresis(&h, 50, 100);
+    updateHysteresis(&h, 101);
+    ASSERT_EQ(HIGH, h.currentState);
+}
+
+TEST_F(HysteresisTest, TestUpdateInHighWithValuePassingToHighThreshold) {
+    hysteresis h;
+
+    initHysteresis(&h, 50, 100);
+    updateHysteresis(&h, 101);
+    updateHysteresis(&h, 99);
+    ASSERT_EQ(HIGH, h.currentState);
+}
+
+TEST_F(HysteresisTest, TestUpdateInHighWithValueHittingToLowThreshold) {
+    hysteresis h;
+
+    initHysteresis(&h, 50, 100);
+    updateHysteresis(&h, 101);
+    updateHysteresis(&h, 50);
+    ASSERT_EQ(HIGH, h.currentState);
+}
+
+TEST_F(HysteresisTest, TestUpdateInHighWithValuePassingToLowThreshold) {
+    hysteresis h;
+
+    initHysteresis(&h, 50, 100);
+    updateHysteresis(&h, 101);
+    updateHysteresis(&h, 49);
+    ASSERT_EQ(LOW, h.currentState);
+}
+
+TEST_F(HysteresisTest, TestUpdateCycleBackAndForth) {
+    hysteresis h;
+
+    initHysteresis(&h, 50, 100);
+
+    updateHysteresis(&h, 101);
+    ASSERT_EQ(HIGH, h.currentState);
+
+    updateHysteresis(&h, 49);
+    ASSERT_EQ(LOW, h.currentState);
+
+    updateHysteresis(&h, 101);
+    ASSERT_EQ(HIGH, h.currentState);
+
+    updateHysteresis(&h, 51);
+    ASSERT_EQ(HIGH, h.currentState);
+
+    updateHysteresis(&h, 49);
+    ASSERT_EQ(LOW, h.currentState);
+
+    updateHysteresis(&h, 48);
     ASSERT_EQ(LOW, h.currentState);
 }

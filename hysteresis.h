@@ -14,7 +14,6 @@ enum hysteresisState {
 };
 
 struct hysteresis {
-    uint8_t currentValue;
     uint8_t toHighThreshold;
     uint8_t toLowThreshold;
     enum hysteresisState currentState;

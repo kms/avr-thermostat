@@ -10,15 +10,17 @@
 #include "hysteresis.h"
 
 void initHysteresis(hysteresis *h, uint8_t low, uint8_t high) {
-    h->currentValue = 0;
-
-    if (h->currentValue < high) {
-        h->currentState = LOW;
-    } else {
-        h->currentState = HIGH;
-    }
+    h->toLowThreshold = low;
+    h->toHighThreshold = high;
+    h->currentState = LOW;
 }
 
 void updateHysteresis(hysteresis *h, uint8_t newValue) {
-    h->currentValue = newValue;
+    if (newValue > h->toHighThreshold) {
+        h->currentState = HIGH;
+    }
+
+    if (newValue < h->toLowThreshold) {
+        h->currentState = LOW;
+    }
 }
