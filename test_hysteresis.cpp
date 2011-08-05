@@ -40,7 +40,7 @@ TEST_F(HysteresisTest, TestUpdateWithValueNotCrossingThresholds) {
     ASSERT_EQ(LOW, h.currentState);
 }
 
-TEST_F(HysteresisTest, TestUpdateWithValueHittingLowThreshold) {
+TEST_F(HysteresisTest, TestUpdateWithValueHittingToLowThreshold) {
     hysteresis h;
 
     initHysteresis(&h, 50, 100);
