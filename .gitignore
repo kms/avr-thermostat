@@ -1,0 +1,6 @@
+*.elf
+*.lst
+*.map
+*.o
+run-tests
+gtest/*.o
