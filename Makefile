@@ -124,6 +124,7 @@ clean:
 	$(RM) *.da
 	$(RM) *.gcov
 	$(RM) $(TESTRUNNER)
+	$(RM) gtest/*.o
 	@echo "Errors: none"
 	
 size:
