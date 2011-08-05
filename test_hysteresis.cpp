@@ -29,3 +29,21 @@ TEST_F(HysteresisTest, TestInit) {
     ASSERT_EQ(0, h.currentValue);
     ASSERT_EQ(LOW, h.currentState);
 }
+
+TEST_F(HysteresisTest, TestUpdateWithValueNotCrossingThresholds) {
+    hysteresis h;
+
+    initHysteresis(&h, 50, 100);
+    ASSERT_EQ(0, h.currentValue);
+    updateHysteresis(&h, 10);
+    ASSERT_EQ(10, h.currentValue);
+    ASSERT_EQ(LOW, h.currentState);
+}
+
+TEST_F(HysteresisTest, TestUpdateWithValueHittingLowThreshold) {
+    hysteresis h;
+
+    initHysteresis(&h, 50, 100);
+    updateHysteresis(&h, 50);
+    ASSERT_EQ(LOW, h.currentState);
+}

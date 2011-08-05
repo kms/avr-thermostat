@@ -21,5 +21,6 @@ struct hysteresis {
 };
 
 void initHysteresis(hysteresis *h, uint8_t low, uint8_t high);
+void updateHysteresis(hysteresis *h, uint8_t newValue);
 
 #endif

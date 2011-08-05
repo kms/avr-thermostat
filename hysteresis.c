@@ -18,3 +18,7 @@ void initHysteresis(hysteresis *h, uint8_t low, uint8_t high) {
         h->currentState = HIGH;
     }
 }
+
+void updateHysteresis(hysteresis *h, uint8_t newValue) {
+    h->currentValue = newValue;
+}
