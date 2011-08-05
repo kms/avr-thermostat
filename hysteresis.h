@@ -13,11 +13,11 @@ enum hysteresisState {
     LOW
 };
 
-struct hysteresis {
+typedef struct {
     uint8_t toHighThreshold;
     uint8_t toLowThreshold;
     enum hysteresisState currentState;
-};
+} hysteresis;
 
 void initHysteresis(hysteresis *h, uint8_t low, uint8_t high);
 void updateHysteresis(hysteresis *h, uint8_t newValue);
