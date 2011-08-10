@@ -36,7 +36,7 @@
 	CPFLAGS	= -g -Os -Wall -Wstrict-prototypes -I$(AVRLIB) -Wa,-ahlms=$(<:.c=.lst) -fpack-struct -fshort-enums -mcall-prologues -D__TIMESTAMP_STRING__=$(TIMESTAMP) -Winline -fwhole-program -combine 
 
 #linker flags
-	LDFLAGS = -Wl,-Map=$(TRG).map,--cref -fwhole-program -combine
+	LDFLAGS = -Wl,-Map=$(TRG).map,--cref -fwhole-program -combine -lm
 
 ### BLOCK 1) define some variables based on the AVR base path in $(AVR) ###
 
@@ -93,11 +93,11 @@ all:	$(TRG).elf $(TRG).ok
 
 ### BLOCK 9) create bin (.hex and .eep) files from elf output file ###
 
-#%.hex: %.elf
-#	$(BIN) -O $(FORMAT) -R .eeprom $< $@
+%.hex: %.elf
+	$(BIN) -O $(FORMAT) -R .eeprom $< $@
 
-#%.eep: %.elf
-#	$(BIN) -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 -O $(FORMAT) $< $@
+%.eep: %.elf
+	$(BIN) -j .eeprom --set-section-flags=.eeprom="alloc,load" --change-section-lma .eeprom=0 -O $(FORMAT) $< $@
 
 ###### BLOCK 10) If all other steps compile ok then echo "Errors: none" ######
 
