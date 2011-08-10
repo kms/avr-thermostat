@@ -6,21 +6,29 @@
  */
 
 #include <stdint.h>
+#include <stdio.h>
 
 #include "hysteresis.h"
 
-void initHysteresis(hysteresis *h, uint8_t low, uint8_t high) {
-    h->toLowThreshold = low;
-    h->toHighThreshold = high;
+void initHysteresis(hysteresis *h) {
     h->currentState = LOW;
+    setThresholds(h, 0, 0);
 }
 
-void updateHysteresis(hysteresis *h, uint8_t newValue) {
+void setThresholds(hysteresis *h, int16_t low, int16_t high) {
+    if (low <= high) {
+        h->toLowThreshold = low;
+        h->toHighThreshold = high;
+    } else {
+        h->toLowThreshold = high;
+        h->toHighThreshold = low;
+    }
+}
+
+void updateHysteresis(hysteresis *h, int16_t newValue) {
     if (newValue > h->toHighThreshold) {
         h->currentState = HIGH;
-    }
-
-    if (newValue < h->toLowThreshold) {
+    } else if (newValue < h->toLowThreshold) {
         h->currentState = LOW;
     }
 }

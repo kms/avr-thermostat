@@ -14,7 +14,8 @@
 class HysteresisTest : public ::testing::Test {
     protected:
         virtual void SetUp() {
-            initHysteresis(&h, 50, 100);
+            initHysteresis(&h);
+            setThresholds(&h, 50, 100);
         }
 
         virtual void TearDown() {
@@ -85,4 +86,47 @@ TEST_F(HysteresisTest, TestUpdateCycleBackAndForth) {
 
     updateHysteresis(&h, 101);
     ASSERT_EQ(HIGH, h.currentState);
+}
+
+TEST_F(HysteresisTest, TestSetThresholds) {
+    setThresholds(&h, 10, 20);
+    updateHysteresis(&h, 10);
+    ASSERT_EQ(LOW, h.currentState);
+
+    updateHysteresis(&h, 21);
+    ASSERT_EQ(HIGH, h.currentState);
+}
+
+TEST_F(HysteresisTest, TestSwapThresholdsWhenLowIsHigherThanHigh) {
+    setThresholds(&h, 20, 10);
+    updateHysteresis(&h, 9);
+    ASSERT_EQ(LOW, h.currentState);
+
+    updateHysteresis(&h, 15);
+    ASSERT_EQ(LOW, h.currentState);
+
+    updateHysteresis(&h, 21);
+    ASSERT_EQ(HIGH, h.currentState);
+
+    updateHysteresis(&h, 9);
+    ASSERT_EQ(LOW, h.currentState);
+}
+
+TEST_F(HysteresisTest, TestWtihSimilarThresholds) {
+    setThresholds(&h, 10, 10);
+
+    updateHysteresis(&h, 9);
+    ASSERT_EQ(LOW, h.currentState);
+
+    updateHysteresis(&h, 10);
+    ASSERT_EQ(LOW, h.currentState);
+
+    updateHysteresis(&h, 11);
+    ASSERT_EQ(HIGH, h.currentState);
+
+    updateHysteresis(&h, 10);
+    ASSERT_EQ(HIGH, h.currentState);
+
+    updateHysteresis(&h, 9);
+    ASSERT_EQ(LOW, h.currentState);
 }
