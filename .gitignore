@@ -2,5 +2,6 @@
 *.lst
 *.map
 *.o
+*.hex
 run-tests
 gtest/*.o
