@@ -13,11 +13,11 @@
 
 	TRG     = avr-thermostat
 
-	TESTS   = test_thermistor.cpp test_hysteresis.cpp
+	TESTS   = test_hysteresis.cpp
 	TESTRUNNER = run-tests
 	GTEST = gtest/gtest-all
 
-	TESTABLES = thermistor.c hysteresis.c
+	TESTABLES = hysteresis.c
 	SRC 	= $(TRG).c $(TESTABLES)
 
 #put additional assembler source file here
@@ -27,7 +27,7 @@
 	LIB	=
 
 #additional includes to compile
-	INC	= thermistor.h hysteresis.h
+	INC	= hysteresis.h
 
 #assembler flags
 	ASFLAGS = -Wa, -gstabs
