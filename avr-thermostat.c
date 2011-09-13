@@ -32,6 +32,7 @@ int16_t measureTemperature(void) {
     ADCSRA |= _BV(ADIF);
     ADCSRA &= ~(_BV(ADEN));
 
+    // 0V (0) == -273°C, 5V (1023) == 228°C
     int16_t temp;
     temp = ADCL | (ADCH << 8);
     temp *= 0.49;
@@ -55,6 +56,7 @@ int16_t measureThreshold(enum thresholdPort thresholdPort) {
     ADCSRA |= _BV(ADIF);
     ADCSRA &= ~(_BV(ADEN));
 
+    // 0V (0) == 0°C, 5V (1023) == 100°C
     int16_t threshold;
     threshold = ADCL | (ADCH << 8);
     threshold *= 0.098;
@@ -65,7 +67,6 @@ int16_t measureThreshold(enum thresholdPort thresholdPort) {
 int main(void) {
     /* Watchdog */
     wdt_reset();
-    //wdt_enable(WDTO_1S);
     wdt_disable();
 
     /* Ports */
@@ -78,6 +79,7 @@ int main(void) {
     hysteresis h;
     initHysteresis(&h);
 
+    /* Fan test at startup */
     PORTB |= _BV(PINB0);
     _delay_ms(5000);
     PORTB &= ~(_BV(PINB0));
